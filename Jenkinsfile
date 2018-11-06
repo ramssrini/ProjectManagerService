@@ -14,13 +14,15 @@ pipeline{
 	}
 	stages{
 		stage('Build'){
-			echo 'Building......'
-			sh './mvnw install dockerfile:build'
-			
+			steps{
+				echo 'Building......'
+				sh './mvnw install dockerfile:build'
+			}
 		}
 		stage('Test'){
-			echo 'Testing......'
-		
+			steps{
+				echo 'Testing......'
+			}
 		}
 	
 	}
