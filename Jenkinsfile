@@ -1,12 +1,7 @@
 pipeline{
 
 	agent{
-		docker 
-		{
-			image 'java:8'
-			
 		
-		}
 	}
 	environment
 	{
