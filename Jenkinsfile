@@ -1,7 +1,8 @@
 pipeline{
 
 	agent{
-		
+		none{
+		}
 	}
 	environment
 	{
