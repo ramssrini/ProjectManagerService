@@ -1,8 +1,6 @@
 package com.cts.fsd.projectmanager.controller;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,34 +20,35 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.cts.fsd.projectmanager.bean.Task;
-import com.cts.fsd.projectmanager.service.TaskManagerService;
+import com.cts.fsd.projectmanager.bean.User;
+import com.cts.fsd.projectmanager.service.UserManagerService;
 import com.google.gson.Gson;
 @RunWith(SpringRunner.class)
-@WebMvcTest(TaskControllerTest.class)
-public class TaskControllerTest {
+@WebMvcTest(UserControllerTest.class)
+public class UserControllerTest {
 	@Rule
 	public MockitoRule mockitoRule = MockitoJUnit.rule();
 
 	@Mock
-	private TaskManagerService taskManagerService;
+	private UserManagerService userManagerService;
 
 	@Autowired
 	private MockMvc mockMvc;
 	@Test
-	public void addTask() {
-		Task task = new Task();
-		task.setEndDate("11/11/2018");
-		task.setStartDate("11/11/2017");
-		task.setParentTask("Test Parent Task");
-		task.setTask("Test Task Description");
-		task.setPriority(3);
+	public void addUser() {
+		User user = new User();
+		user.setEmployeeId("12323131");
+		user.setFirstName("Test First Name");
+		user.setLastName("Test Last Name");
+		user.setProjectId(12);
+		user.setTaskId(23);
 		Gson gson = new Gson();
-		String json = gson.toJson(task);
+		String json = gson.toJson(user);
 		
-		when(this.taskManagerService.addTask(task)).thenReturn(task);
+		when(this.userManagerService.addUser(user)).thenReturn(user);
 		try {
 			this.mockMvc
-					.perform(post("/addTask").accept(MediaType.APPLICATION_JSON)
+					.perform(post("/addUser").accept(MediaType.APPLICATION_JSON)
 							.characterEncoding(StandardCharsets.UTF_8.toString())
 							.contentType(MediaType.APPLICATION_JSON).content(json))
 					.andExpect(status().is2xxSuccessful()).andReturn();
@@ -60,18 +59,18 @@ public class TaskControllerTest {
 	
 	@Test
 	public void getTasks() {
-		Task task = new Task();
-		task.setEndDate("11/11/2018");
-		task.setStartDate("11/11/2017");
-		task.setParentTask("Test Parent Task");
-		task.setTask("Test Task Description");
-		task.setPriority(3);
+		User user = new User();
+		user.setEmployeeId("12323131");
+		user.setFirstName("Test First Name");
+		user.setLastName("Test Last Name");
+		user.setProjectId(12);
+		user.setTaskId(23);
 		Gson gson = new Gson();
-		String json = gson.toJson(task);
-		when(this.taskManagerService.getTasksById("1")).thenReturn(task);
+		String json = gson.toJson(user);
+		when(this.userManagerService.getUserById("1")).thenReturn(user);
 		try {
 			this.mockMvc
-					.perform(get("/getTasks").accept(MediaType.APPLICATION_JSON)
+					.perform(get("/getUsers").accept(MediaType.APPLICATION_JSON)
 							.characterEncoding(StandardCharsets.UTF_8.toString())
 							.contentType(MediaType.APPLICATION_JSON).content("1"))
 					.andExpect(status().is2xxSuccessful()).andReturn();
@@ -82,18 +81,19 @@ public class TaskControllerTest {
 	
 	@Test
 	public void updateTask() {
-		Task task = new Task();
-		task.setEndDate("11/10/2018");
-		task.setStartDate("11/10/2017");
-		task.setParentTask("Test Parent Task");
-		task.setTask("Test Task Description");
-		task.setPriority(5);
+		User user = new User();
+		user.setEmployeeId("12323131");
+		user.setFirstName("Updated First Name");
+		user.setLastName("Updated Last Name");
+		user.setProjectId(12);
+		user.setTaskId(23);
+		user.setUserId(1);
 		Gson gson = new Gson();
-		String json = gson.toJson(task);
-		when(this.taskManagerService.getTasksById("1")).thenReturn(task);
+		String json = gson.toJson(user);
+		when(this.userManagerService.getUserById("1")).thenReturn(user);
 		try {
 			this.mockMvc
-					.perform(post("/updateTask").accept(MediaType.APPLICATION_JSON)
+					.perform(post("/updateUser").accept(MediaType.APPLICATION_JSON)
 							.characterEncoding(StandardCharsets.UTF_8.toString())
 							.contentType(MediaType.APPLICATION_JSON).content(json))
 					.andExpect(status().is2xxSuccessful()).andReturn();

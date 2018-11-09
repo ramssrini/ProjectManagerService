@@ -14,6 +14,7 @@ public class Task implements java.io.Serializable{
     private String startDate;
 	private String endDate;
     private int priority;
+    private String status;
 	
 	public Task() {
 		
@@ -90,6 +91,14 @@ public class Task implements java.io.Serializable{
 	 */
 	public void setParentTask(String parentTask) {
 		this.parentTask = parentTask;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
     
     
