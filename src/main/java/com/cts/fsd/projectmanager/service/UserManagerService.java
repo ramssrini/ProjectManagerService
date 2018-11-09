@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.cts.fsd.projectmanager.bean.Task;
 import com.cts.fsd.projectmanager.bean.User;
 import com.mongodb.client.result.DeleteResult;
 @Service
@@ -26,7 +25,7 @@ public class UserManagerService {
 		query.with(new Sort(Sort.Direction.DESC, "userId"));
 		query.limit(1);
 		User user = mongoTemplate.findOne(query, User.class); 
-		long id = user != null ? user.getTaskId():0;
+		long id = user != null ? user.getUserId():0;
 		userReq.setUserId(id+1);
 		// Adding User data
 		mongoTemplate.save(userReq);

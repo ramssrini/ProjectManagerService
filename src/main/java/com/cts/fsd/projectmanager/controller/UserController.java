@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cts.fsd.projectmanager.bean.Task;
 import com.cts.fsd.projectmanager.bean.User;
-import com.cts.fsd.projectmanager.service.TaskManagerService;
 import com.cts.fsd.projectmanager.service.UserManagerService;
 
 
@@ -26,7 +24,7 @@ UserManagerService userManagerService;
 
 	@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value="/getUsers", produces=MediaType.APPLICATION_JSON_VALUE)
-    public List<User> getTasks() {
+    public List<User> getUsers() {
     	
     	List<User> users = userManagerService.getAllUsers();
         return users;
@@ -34,7 +32,7 @@ UserManagerService userManagerService;
 	
 	@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value="/getUser", produces=MediaType.APPLICATION_JSON_VALUE)
-    public User getTask( @RequestParam(value="id") String id) {
+    public User getUser( @RequestParam(value="id") String id) {
     	
 		User user = userManagerService.getUserById(id);
     	System.out.println(user);
@@ -43,7 +41,7 @@ UserManagerService userManagerService;
 
 	@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value="/addUser", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User addTask(@RequestBody User userReq) {
+    public User addUser(@RequestBody User userReq) {
     	
 
 		User user = userManagerService.addUser(userReq);
@@ -63,11 +61,10 @@ UserManagerService userManagerService;
 
 	@CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping(value="/deleteUser", produces=MediaType.APPLICATION_JSON_VALUE)
-    public long delete( @RequestParam(value="id") String id) {
+    public long deleteUser( @RequestParam(value="id") String id) {
     	
 
 		long deleteCount = userManagerService.deleteUser(id);
 		
     	return deleteCount;
-    }
-}
+    }}
