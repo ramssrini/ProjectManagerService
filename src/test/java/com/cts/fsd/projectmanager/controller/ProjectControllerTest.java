@@ -43,7 +43,6 @@ public class ProjectControllerTest {
 		project.setPriority(4);
 		project.setStartDate("12/12/2017");
 		project.setEndDate("12/12/2018");
-		project.setProjectId(12);
 		Gson gson = new Gson();
 		String json = gson.toJson(project);
 		
@@ -66,7 +65,6 @@ public class ProjectControllerTest {
 		project.setPriority(4);
 		project.setStartDate("12/12/2017");
 		project.setEndDate("12/12/2018");
-		project.setProjectId(12);
 		Gson gson = new Gson();
 		String json = gson.toJson(project);
 		when(this.projectManagerService.getProjectById("1")).thenReturn(project);
@@ -88,7 +86,6 @@ public class ProjectControllerTest {
 		project.setPriority(4);
 		project.setStartDate("12/12/2017");
 		project.setEndDate("12/12/2018");
-		project.setProjectId(12);
 		Gson gson = new Gson();
 		String json = gson.toJson(project);
 		when(this.projectManagerService.getProjectById("1")).thenReturn(project);

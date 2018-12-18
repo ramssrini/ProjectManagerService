@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cts.fsd.projectmanager.bean.Task;
+import com.cts.fsd.projectmanager.bean.ParentTask;
+import com.cts.fsd.projectmanager.vo.Task;
 import com.cts.fsd.projectmanager.service.TaskManagerService;
 
 
@@ -31,10 +32,18 @@ TaskManagerService taskManagerService;
     }
 	
 	@CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping(value="/getParentTasks", produces=MediaType.APPLICATION_JSON_VALUE)
+    public List<ParentTask> getParentTasks() {
+    	
+    	List<ParentTask> tasks = taskManagerService.getAllParentTasks();
+        return tasks;
+    }
+	
+	@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value="/getTask", produces=MediaType.APPLICATION_JSON_VALUE)
     public Task getTask( @RequestParam(value="id") String id) {
     	
-    	Task task = taskManagerService.getTasksById(id);
+		Task task = taskManagerService.getTasksById(id);
     	System.out.println(task);
         return task;
     }
@@ -48,6 +57,17 @@ TaskManagerService taskManagerService;
 		
     	return task;
     }
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping(value="/addParentTask", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Task addParentTask(@RequestBody Task taskReq) {
+    	
+
+		Task task = taskManagerService.addParentTask(taskReq);
+		
+    	return task;
+    }
+	
 
 	@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value="/updateTask", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

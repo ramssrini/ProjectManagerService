@@ -8,29 +8,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User implements Serializable{
 
 	
-	private long userId;
-    private long projectId;
-    private long taskId;
+	private String _id;
+    private String projectId;
+    private String taskId;
 	private String firstName;
     private String lastName;
 	private String employeeId;
 	
-	public long getUserId() {
-		return userId;
-	}
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-	public long getProjectId() {
+	
+	public String getProjectId() {
 		return projectId;
 	}
-	public void setProjectId(long projectId) {
+	public void setProjectId(String projectId) {
 		this.projectId = projectId;
 	}
-	public long getTaskId() {
+	public String getTaskId() {
 		return taskId;
 	}
-	public void setTaskId(long taskId) {
+	public void setTaskId(String taskId) {
 		this.taskId = taskId;
 	}
 	public String getFirstName() {
@@ -50,6 +45,18 @@ public class User implements Serializable{
 	}
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
+	}
+	/**
+	 * @return the _id
+	 */
+	public String get_id() {
+		return _id;
+	}
+	/**
+	 * @param _id the _id to set
+	 */
+	public void set_id(String _id) {
+		this._id = _id;
 	}
 	
 	

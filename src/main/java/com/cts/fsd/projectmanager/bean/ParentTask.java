@@ -5,19 +5,26 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "parenttask")
 public class ParentTask {
 	
-    private long parentId;
-    private String parentTaskDesc;
-		public long getParentId() {
-			return parentId;
+    private String _id;
+    private String parentTask;
+		
+		public String getParentTask() {
+			return parentTask;
 		}
-		public void setParentId(long parentId) {
-			this.parentId = parentId;
+		public void setParentTask(String parentTask) {
+			this.parentTask = parentTask;
 		}
-		public String getParentTaskDesc() {
-			return parentTaskDesc;
+		/**
+		 * @return the _id
+		 */
+		public String get_id() {
+			return _id;
 		}
-		public void setParentTaskDesc(String parentTaskDesc) {
-			this.parentTaskDesc = parentTaskDesc;
+		/**
+		 * @param _id the _id to set
+		 */
+		public void set_id(String _id) {
+			this._id = _id;
 		}
 	    
 	

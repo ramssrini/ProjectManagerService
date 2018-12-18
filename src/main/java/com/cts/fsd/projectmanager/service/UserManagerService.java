@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.cts.fsd.projectmanager.bean.User;
+import com.cts.fsd.projectmanager.utils.Utils;
 import com.mongodb.client.result.DeleteResult;
 @Service
 public class UserManagerService {
@@ -21,13 +22,14 @@ public class UserManagerService {
 	
 	public User addUser(User userReq) {
 		
-		Query query = new Query();
-		query.with(new Sort(Sort.Direction.DESC, "userId"));
-		query.limit(1);
-		User user = mongoTemplate.findOne(query, User.class); 
-		long id = user != null ? user.getUserId():0;
-		userReq.setUserId(id+1);
+//		Query query = new Query();
+//		query.with(new Sort(Sort.Direction.DESC, "userId"));
+//		query.limit(1);
+//		User user = mongoTemplate.findOne(query, User.class); 
+//		long id = user != null ? user.get_id():0;
+//		userReq.setUserId(id+1);
 		// Adding User data
+		userReq.set_id(Utils.getNextSequence("userid").toString());
 		mongoTemplate.save(userReq);
 		
 		return userReq;
@@ -44,7 +46,7 @@ public class UserManagerService {
 	public User getUserById(String id) {
 		User user = new User();
 		Query query = new Query();
-		query.addCriteria(Criteria.where("userId").is(Long.valueOf(id)));
+		query.addCriteria(Criteria.where("_id").is(id));
 		user = mongoTemplate.findOne(query, User.class);
 		
 		return user;
@@ -54,7 +56,7 @@ public class UserManagerService {
 	{
 		
 		Query query = new Query();
-		query.addCriteria(Criteria.where("userId").is(userReq.getUserId()));
+		query.addCriteria(Criteria.where("_id").is(userReq.get_id()));
 		User user = mongoTemplate.findOne(query, User.class); 	
 		mongoTemplate.remove(query, User.class);
 		mongoTemplate.save(userReq);
@@ -64,7 +66,7 @@ public class UserManagerService {
 	public long deleteUser(String  id)
 	{
 		Query query = new Query();
-		query.addCriteria(Criteria.where("userId").is(Long.valueOf(id)));
+		query.addCriteria(Criteria.where("_id").is(id));
 		DeleteResult deleteResult =mongoTemplate.remove(query, User.class);		
 		return deleteResult.getDeletedCount();
 	}

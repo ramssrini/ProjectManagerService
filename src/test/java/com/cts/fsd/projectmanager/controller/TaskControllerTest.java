@@ -37,10 +37,9 @@ public class TaskControllerTest {
 	private MockMvc mockMvc;
 	@Test
 	public void addTask() {
-		Task task = new Task();
+		com.cts.fsd.projectmanager.vo.Task task = new com.cts.fsd.projectmanager.vo.Task();
 		task.setEndDate("11/11/2018");
 		task.setStartDate("11/11/2017");
-		task.setParentTask("Test Parent Task");
 		task.setTask("Test Task Description");
 		task.setPriority(3);
 		Gson gson = new Gson();
@@ -60,10 +59,9 @@ public class TaskControllerTest {
 	
 	@Test
 	public void getTasks() {
-		Task task = new Task();
+		com.cts.fsd.projectmanager.vo.Task task = new com.cts.fsd.projectmanager.vo.Task();
 		task.setEndDate("11/11/2018");
 		task.setStartDate("11/11/2017");
-		task.setParentTask("Test Parent Task");
 		task.setTask("Test Task Description");
 		task.setPriority(3);
 		Gson gson = new Gson();
@@ -82,10 +80,9 @@ public class TaskControllerTest {
 	
 	@Test
 	public void updateTask() {
-		Task task = new Task();
+		com.cts.fsd.projectmanager.vo.Task task = new com.cts.fsd.projectmanager.vo.Task();
 		task.setEndDate("11/10/2018");
 		task.setStartDate("11/10/2017");
-		task.setParentTask("Test Parent Task");
 		task.setTask("Test Task Description");
 		task.setPriority(5);
 		Gson gson = new Gson();

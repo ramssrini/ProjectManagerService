@@ -1,14 +1,15 @@
-package com.cts.fsd.projectmanager.bean;
+package com.cts.fsd.projectmanager.vo;
 
 import java.io.Serializable;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection  = "project")
 public class Project implements Serializable{
 
-	private String _id;
+	private String userid;
 	private String project;
+
+	private String projectId;
 	private String startDate;
 	private String endDate;
     private int priority;
@@ -36,17 +37,30 @@ public class Project implements Serializable{
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+	
 	/**
-	 * @return the _id
+	 * @return the userid
 	 */
-	public String get_id() {
-		return _id;
+	public String getUserid() {
+		return userid;
 	}
 	/**
-	 * @param _id the _id to set
+	 * @param userid the userid to set
 	 */
-	public void set_id(String _id) {
-		this._id = _id;
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+	/**
+	 * @return the projectId
+	 */
+	public String getProjectId() {
+		return projectId;
+	}
+	/**
+	 * @param projectId the projectId to set
+	 */
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
 	
 }

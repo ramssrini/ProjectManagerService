@@ -40,8 +40,8 @@ public class UserControllerTest {
 		user.setEmployeeId("12323131");
 		user.setFirstName("Test First Name");
 		user.setLastName("Test Last Name");
-		user.setProjectId(12);
-		user.setTaskId(23);
+		user.setProjectId("12");
+		user.setTaskId("23");
 		Gson gson = new Gson();
 		String json = gson.toJson(user);
 		
@@ -63,8 +63,8 @@ public class UserControllerTest {
 		user.setEmployeeId("12323131");
 		user.setFirstName("Test First Name");
 		user.setLastName("Test Last Name");
-		user.setProjectId(12);
-		user.setTaskId(23);
+		user.setProjectId("12");
+		user.setTaskId("23");
 		Gson gson = new Gson();
 		String json = gson.toJson(user);
 		when(this.userManagerService.getUserById("1")).thenReturn(user);
@@ -85,9 +85,9 @@ public class UserControllerTest {
 		user.setEmployeeId("12323131");
 		user.setFirstName("Updated First Name");
 		user.setLastName("Updated Last Name");
-		user.setProjectId(12);
-		user.setTaskId(23);
-		user.setUserId(1);
+		user.setProjectId("12");
+		user.setTaskId("23");
+		user.set_id("1.0");
 		Gson gson = new Gson();
 		String json = gson.toJson(user);
 		when(this.userManagerService.getUserById("1")).thenReturn(user);
