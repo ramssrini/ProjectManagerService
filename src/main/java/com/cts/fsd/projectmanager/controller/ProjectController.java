@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cts.fsd.projectmanager.bean.Project;
 import com.cts.fsd.projectmanager.service.ProjectManagerService;
+import com.cts.fsd.projectmanager.vo.Project;
 
 
 @RestController
@@ -29,14 +29,14 @@ public class ProjectController {
 	        return projects;
 	    }
 		
-		@CrossOrigin(origins = "http://localhost:4200")
-	    @GetMapping(value="/getProject", produces=MediaType.APPLICATION_JSON_VALUE)
-	    public Project getProject( @RequestParam(value="id") String id) {
-	    	
-			Project project = projectManagerService.getProjectById(id);
-	    	System.out.println(project);
-	        return project;
-	    }
+//		@CrossOrigin(origins = "http://localhost:4200")
+//	    @GetMapping(value="/getProject", produces=MediaType.APPLICATION_JSON_VALUE)
+//	    public Project getProject( @RequestParam(value="id") String id) {
+//	    	
+//			Project project = projectManagerService.getProjectById(id);
+//	    	System.out.println(project);
+//	        return project;
+//	    }
 	
 		@CrossOrigin(origins = "http://localhost:4200")
 	    @PostMapping(value="/addProject", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -50,20 +50,20 @@ public class ProjectController {
 	
 		@CrossOrigin(origins = "http://localhost:4200")
 	    @PostMapping(value="/updateProject", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	    public Project updateProject(@RequestBody Project projectReq) {
+	    public com.cts.fsd.projectmanager.vo.Project updateProject(@RequestBody com.cts.fsd.projectmanager.vo.Project projectReq) {
 	    	
 	
-			Project project = projectManagerService.updateProject(projectReq);
+			com.cts.fsd.projectmanager.vo.Project project = projectManagerService.updateProject(projectReq);
 			
 	    	return project;
 	    }
 	
 		@CrossOrigin(origins = "http://localhost:4200")
-	    @DeleteMapping(value="/deleteProject", produces=MediaType.APPLICATION_JSON_VALUE)
-	    public long deleteProject( @RequestParam(value="id") String id) {
+		@PostMapping(value="/deleteProject", produces=MediaType.APPLICATION_JSON_VALUE)
+	    public long deleteProject( @RequestBody com.cts.fsd.projectmanager.vo.Project projectReq) {
 	    	
 	
-			long deleteCount = projectManagerService.deleteProject(id);
+			long deleteCount = projectManagerService.deleteProject(projectReq);
 			
 	    	return deleteCount;
 	    }

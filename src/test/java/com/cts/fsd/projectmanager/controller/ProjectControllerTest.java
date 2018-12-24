@@ -38,7 +38,7 @@ public class ProjectControllerTest {
 	private MockMvc mockMvc;
 	@Test
 	public void addUser() {
-		Project project = new Project();
+		com.cts.fsd.projectmanager.vo.Project project = new com.cts.fsd.projectmanager.vo.Project();
 		project.setProject("Test Project Name");
 		project.setPriority(4);
 		project.setStartDate("12/12/2017");
@@ -67,7 +67,7 @@ public class ProjectControllerTest {
 		project.setEndDate("12/12/2018");
 		Gson gson = new Gson();
 		String json = gson.toJson(project);
-		when(this.projectManagerService.getProjectById("1")).thenReturn(project);
+//		when(this.projectManagerService.getProjectById("1")).thenReturn(project);
 		try {
 			this.mockMvc
 					.perform(get("/getProjects").accept(MediaType.APPLICATION_JSON)
@@ -88,7 +88,7 @@ public class ProjectControllerTest {
 		project.setEndDate("12/12/2018");
 		Gson gson = new Gson();
 		String json = gson.toJson(project);
-		when(this.projectManagerService.getProjectById("1")).thenReturn(project);
+//		when(this.projectManagerService.getProjectById("1")).thenReturn(project);
 		try {
 			this.mockMvc
 					.perform(post("/updateProject").accept(MediaType.APPLICATION_JSON)

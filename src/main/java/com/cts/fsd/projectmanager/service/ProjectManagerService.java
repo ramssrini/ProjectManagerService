@@ -1,7 +1,9 @@
 package com.cts.fsd.projectmanager.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -22,53 +24,138 @@ public class ProjectManagerService {
 	MongoTemplate mongoTemplate;
 	
 	
-	public Project addProject(Project projectReq) {
-		
-//		Query query = new Query();
-//		query.with(new Sort(Sort.Direction.DESC, "userId"));
-//		query.limit(1);
-//		Project project = mongoTemplate.findOne(query, Project.class); 
-//		long id = project != null ? project.getProjectId():0;
-//		projectReq.setProjectId(id+1);
-		// Adding User data
+	public com.cts.fsd.projectmanager.vo.Project addProject(com.cts.fsd.projectmanager.vo.Project projectReq) {
+	
+
 		projectReq.set_id(Utils.getNextSequence("projectid").toString());
-		mongoTemplate.save(projectReq);
+		Project project = new Project();
+		project.setEndDate(projectReq.getEndDate());
+		project.setStartDate(projectReq.getStartDate());
+		project.setPriority(projectReq.getPriority());
+		project.setProject(projectReq.getProject());
+		project.setEndDate(projectReq.getEndDate());
+		project.set_id(projectReq.get_id());
+		mongoTemplate.save(project);
+		
+		User user = new User();
+		user.setEmployeeId(projectReq.getEmployeeId());
+		user.setLastName(projectReq.getLastName());
+		user.setFirstName(projectReq.getFirstName());
+		user.setProjectId(projectReq.get_id());
+		user.set_id(projectReq.getUserid());
+		Query queryUser = new Query();
+		queryUser.addCriteria(Criteria.where("_id").is(projectReq.getUserid()));
+		mongoTemplate.remove(queryUser, User.class);
+		mongoTemplate.save(user);
+		
+		
 		
 		return projectReq;
 	}
 	
 	
-	public List<Project> getAllProjects() {
+	public List<com.cts.fsd.projectmanager.vo.Project> getAllProjects() {
 		List<Project> projects = new ArrayList<>();
 		projects = mongoTemplate.findAll(Project.class);
+		List<com.cts.fsd.projectmanager.vo.Project> projectList = new ArrayList<>();
 		
-		return projects;
+		Map<String,Project> map = new HashMap<>();
+		
+		for(Project proj : projects)
+		{
+			map.put(proj.get_id(), proj);
+		}
+		
+		List<User> users = new ArrayList<>();
+
+		users = mongoTemplate.findAll(User.class);
+		
+		for(User user : users)
+		{
+			if(user.getProjectId() != null)
+			{
+				com.cts.fsd.projectmanager.vo.Project project = new com.cts.fsd.projectmanager.vo.Project();
+				
+				project.setEmployeeId(user.getEmployeeId());
+				project.setUserid(user.get_id());
+				project.setFirstName(user.getFirstName());
+				project.setLastName(user.getLastName());
+				Project proj = map.get(user.getProjectId());
+				
+				if(proj != null)
+				{
+					project.setProject(proj.getProject());
+					project.setPriority(proj.getPriority());
+					project.setEndDate(proj.getEndDate());
+					project.setStartDate(proj.getStartDate());
+					project.set_id(proj.get_id());
+				}
+				
+				projectList.add(project);
+			
+			}
+		}
+		
+		
+		
+		return projectList;
 	}
 	
-	public Project getProjectById(String id) {
+//	public Project getProjectById(String id) {
+//		Project project = new Project();
+//		Query query = new Query();
+//		query.addCriteria(Criteria.where("_id").is(Long.valueOf(id)));
+//		project = mongoTemplate.findOne(query, Project.class);
+//		
+//		return project;
+//	}
+	
+	public com.cts.fsd.projectmanager.vo.Project updateProject(com.cts.fsd.projectmanager.vo.Project projectReq)
+	{		
+		
+		
 		Project project = new Project();
+		project.setEndDate(projectReq.getEndDate());
+		project.setStartDate(projectReq.getStartDate());
+		project.setPriority(projectReq.getPriority());
+		project.setProject(projectReq.getProject());
+		project.setEndDate(projectReq.getEndDate());
+		project.set_id(projectReq.get_id());
 		Query query = new Query();
-		query.addCriteria(Criteria.where("_id").is(Long.valueOf(id)));
-		project = mongoTemplate.findOne(query, Project.class);
+		query.addCriteria(Criteria.where("_id").is(projectReq.get_id()));
+		mongoTemplate.remove(query, Project.class);
+		mongoTemplate.save(project);
 		
-		return project;
+		User user = new User();
+		user.setEmployeeId(projectReq.getEmployeeId());
+		user.setLastName(projectReq.getLastName());
+		user.setFirstName(projectReq.getFirstName());
+		user.setProjectId(projectReq.get_id());
+		user.set_id(projectReq.getUserid());
+		Query queryUser = new Query();
+		queryUser.addCriteria(Criteria.where("_id").is(projectReq.getUserid()));
+		mongoTemplate.remove(queryUser, User.class);
+		mongoTemplate.save(user);
+		
+		
+		return projectReq;
 	}
 	
-	public Project updateProject(Project projectReq)
+	public long deleteProject(com.cts.fsd.projectmanager.vo.Project projectReq)
 	{
+		User user = new User();
+		user.setEmployeeId(projectReq.getEmployeeId());
+		user.setLastName(projectReq.getLastName());
+		user.setFirstName(projectReq.getFirstName());
+		user.setProjectId("");
+		user.set_id(projectReq.getUserid());
+		Query queryUser = new Query();
+		queryUser.addCriteria(Criteria.where("_id").is(projectReq.getUserid()));
+		mongoTemplate.remove(queryUser, User.class);
+		mongoTemplate.save(user);
 		
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(projectReq.get_id()));
-//		Project project = mongoTemplate.findOne(query, Project.class); 	
-		mongoTemplate.remove(query, User.class);
-		mongoTemplate.save(projectReq);
-		return projectReq;
-	}
-	
-	public long deleteProject(String  id)
-	{
-		Query query = new Query();
-		query.addCriteria(Criteria.where("_id").is(id));
 		DeleteResult deleteResult =mongoTemplate.remove(query, Project.class);		
 		return deleteResult.getDeletedCount();
 	}

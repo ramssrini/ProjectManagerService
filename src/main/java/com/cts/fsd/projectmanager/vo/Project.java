@@ -9,10 +9,34 @@ public class Project implements Serializable{
 	private String userid;
 	private String project;
 
-	private String projectId;
+	private String _id;
 	private String startDate;
 	private String endDate;
     private int priority;
+    
+
+    private String lastName;
+    private String firstName;
+    private String employeeId;
+    
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getEmployeeId() {
+		return employeeId;
+	}
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
 	public String getProject() {
 		return project;
 	}
@@ -51,16 +75,16 @@ public class Project implements Serializable{
 		this.userid = userid;
 	}
 	/**
-	 * @return the projectId
+	 * @return the _id
 	 */
-	public String getProjectId() {
-		return projectId;
+	public String get_id() {
+		return _id;
 	}
 	/**
-	 * @param projectId the projectId to set
+	 * @param _id the _id to set
 	 */
-	public void setProjectId(String projectId) {
-		this.projectId = projectId;
+	public void set_id(String _id) {
+		this._id = _id;
 	}
 	
 }
