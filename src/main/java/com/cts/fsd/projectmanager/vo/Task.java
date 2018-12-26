@@ -13,13 +13,21 @@ public class Task implements java.io.Serializable{
     private int priority;
     private String status;
     private String parentTask;
+    private String userLastName ;
+    private String userFirstName;
+    private String userEmployeeId;
+    private String userprojectId;
+    private String userTaskId;
 	
 	public Task() {
 		
 	}
     
     public Task(String parentId, String projectId, String task,  String startDate,
-			String endDate, int priority, String userId, String parentTask) {
+			String endDate, int priority, String userId, String parentTask, 
+			String userLastName , String userFirstName, String userEmployeeId, 
+			String userprojectId, String userTaskId
+			) {
 		super();
 		this.parentId = parentId;
 		this.projectId = projectId;
@@ -29,9 +37,46 @@ public class Task implements java.io.Serializable{
 		this.priority = priority;
 		this.userId = userId;
 		this.parentTask = parentTask;
+		this.userEmployeeId = userEmployeeId;
+		this.userFirstName = userFirstName;
+		this.setUserLastName(userLastName);
+		this.userprojectId = userprojectId;
+		this.userTaskId = userTaskId;
 	}
 
 	
+	public String getUserFirstName() {
+		return userFirstName;
+	}
+
+	public void setUserFirstName(String userFirstName) {
+		this.userFirstName = userFirstName;
+	}
+
+	public String getUserEmployeeId() {
+		return userEmployeeId;
+	}
+
+	public void setUserEmployeeId(String userEmployeeId) {
+		this.userEmployeeId = userEmployeeId;
+	}
+
+	public String getUserprojectId() {
+		return userprojectId;
+	}
+
+	public void setUserprojectId(String userprojectId) {
+		this.userprojectId = userprojectId;
+	}
+
+	public String getUserTaskId() {
+		return userTaskId;
+	}
+
+	public void setUserTaskId(String userTaskId) {
+		this.userTaskId = userTaskId;
+	}
+
 	public String getTaskId() {
 		return taskId;
 	}
@@ -143,6 +188,20 @@ public class Task implements java.io.Serializable{
 	 */
 	public void setProject(String project) {
 		this.project = project;
+	}
+
+	/**
+	 * @return the userLastName
+	 */
+	public String getUserLastName() {
+		return userLastName;
+	}
+
+	/**
+	 * @param userLastName the userLastName to set
+	 */
+	public void setUserLastName(String userLastName) {
+		this.userLastName = userLastName;
 	}
 
     

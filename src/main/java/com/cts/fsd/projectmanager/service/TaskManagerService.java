@@ -25,24 +25,23 @@ public class TaskManagerService {
 	
 	
 	
-	public com.cts.fsd.projectmanager.vo.Task addTask(com.cts.fsd.projectmanager.vo.Task taskReq) {
-//		ParentTask parentTask = getExistingParentTask(taskReq.getParentTask());
-//		if(parentTask == null) {
-//			parentTask = addParentTask(taskReq);
-//		}
-//		Query query = new Query();
-//		query.with(new Sort(Sort.Direction.DESC, "taskId"));
-//		query.limit(1);
-//		Task task = mongoTemplate.findOne(query, Task.class); 
-//		long id = task != null ? task.getTaskId():0;
-//		taskReq.setTaskId(id+1);
-//		taskReq.setParentId(parentTask.getParentId());
-		
+	public com.cts.fsd.projectmanager.vo.Task addTask(com.cts.fsd.projectmanager.vo.Task taskReq) {		
 		// Adding Task data
-		Task task = new Task(taskReq.getParentId(),taskReq.getProjectId(), taskReq.getUserId(), taskReq.getTask(),taskReq.getStartDate(), taskReq.getEndDate(), taskReq.getPriority());
+		Task task = new Task(taskReq.getParentId(),taskReq.getProjectId(), taskReq.getTask(),taskReq.getStartDate(), taskReq.getEndDate(), taskReq.getPriority());
 		task.set_id(Utils.getNextSequence("taskid").toString());
 		mongoTemplate.save(task);
 		
+		User user = new User();
+		user.setEmployeeId(taskReq.getUserEmployeeId());
+		user.setLastName(taskReq.getUserLastName());
+		user.setFirstName(taskReq.getUserFirstName());
+		user.setProjectId(taskReq.getUserprojectId());
+		user.setTaskId(task.get_id());
+		user.set_id(taskReq.getUserId());
+		Query queryUser = new Query();
+		queryUser.addCriteria(Criteria.where("_id").is(taskReq.getUserId()));
+		mongoTemplate.remove(queryUser, User.class);
+		mongoTemplate.save(user);
 		
 		return taskReq;
 	}
@@ -99,6 +98,14 @@ public class TaskManagerService {
 		for(Project project : projectList) {
 			projectMap.put(project.get_id(), project.getProject());
 		}
+		
+		List<User> userList  = mongoTemplate.findAll(User.class);
+		Map<String, User> userMap = new HashMap<>();
+		
+		for(User user : userList) {
+			userMap.put(user.getTaskId(), user);
+		}
+		
 		for(Task taskItem: tasks)
 		{
 			com.cts.fsd.projectmanager.vo.Task taskVO = new com.cts.fsd.projectmanager.vo.Task();
@@ -107,12 +114,20 @@ public class TaskManagerService {
 			taskVO.setParentId(taskItem.getParentId());
 			taskVO.setProjectId(taskItem.getProjectId());
 			taskVO.setProject(projectMap.get(taskItem.getProjectId()));
-			taskVO.setUserId(taskItem.getUserId());
 			taskVO.setStatus(taskItem.getStatus());
 			taskVO.setTask(taskItem.getTask());
 			taskVO.setParentTask(parentTaskMap.get(taskItem.getParentId()).getParentTask());
 			taskVO.setPriority(taskItem.getPriority());
 			taskVO.setTaskId(taskItem.get_id());
+			User user = userMap.get(taskItem.get_id());
+			if(user != null)
+			{
+				taskVO.setUserEmployeeId(user.getEmployeeId());
+				taskVO.setUserFirstName(user.getFirstName());
+				taskVO.setUserLastName(user.getLastName());
+				taskVO.setUserprojectId(user.getProjectId());
+				taskVO.setUserId(user.get_id());
+			}
 			taskVos.add(taskVO);	
 		}
 		
@@ -130,36 +145,73 @@ public class TaskManagerService {
 	public com.cts.fsd.projectmanager.vo.Task getTasksById(String id) {
 		Task task = new Task();
 		Query query = new Query();
-		query.addCriteria(Criteria.where("_id").is(Long.valueOf(id)));
+		query.addCriteria(Criteria.where("_id").is(id));
 		task = mongoTemplate.findOne(query, Task.class);
 		com.cts.fsd.projectmanager.vo.Task taskRes = new com.cts.fsd.projectmanager.vo.Task();
 		taskRes.setEndDate(task.getEndDate());
 		taskRes.setStartDate(task.getStartDate());
 		taskRes.setStatus(task.getStatus());
 		taskRes.setTask(task.getTask());
+		taskRes.setTaskId(task.get_id());
 		taskRes.setPriority(task.getPriority());
-		taskRes.setUserId(task.getUserId());
 		taskRes.setProjectId(task.getProjectId());
 		taskRes.setParentId(task.getParentId());
+		
+		
+		Query queryParentTask = new Query();
+		queryParentTask.addCriteria(Criteria.where("_id").is(taskRes.getParentId()));
+		ParentTask parentTask = mongoTemplate.findOne(queryParentTask, ParentTask.class);
+		if(parentTask != null)
+		{
+			taskRes.setParentTask(parentTask.getParentTask());
+		}
+		
+		Query queryProjectTask = new Query();
+		queryProjectTask.addCriteria(Criteria.where("_id").is(taskRes.getProjectId()));
+		Project project = mongoTemplate.findOne(queryProjectTask, Project.class);
+		if(project != null)
+		{
+			taskRes.setProject(project.getProject());
+		}
+		
+		List<User> userList  = mongoTemplate.findAll(User.class);
+		
+		for(User user : userList) {
+			if(user != null)
+			{
+				taskRes.setUserEmployeeId(user.getEmployeeId());
+				taskRes.setUserFirstName(user.getFirstName());
+				taskRes.setUserId(user.get_id());
+				taskRes.setUserLastName(user.getLastName());
+				taskRes.setUserprojectId(user.getProjectId());
+				taskRes.setUserTaskId(user.getTaskId());
+			}
+		}
+		
 		return taskRes;
 	}
 	
 	public com.cts.fsd.projectmanager.vo.Task updateTask(com.cts.fsd.projectmanager.vo.Task taskReq)
 	{
-//		ParentTask parentTask = getExistingParentTask(taskReq.getParentTask());
-//		if(parentTask == null) {
-//			parentTask = addParentTask(taskReq);
-//		}
-//		Query query = new Query();
-//		query.addCriteria(Criteria.where("taskId").is(taskReq.getTaskId()));
-//		Task task = mongoTemplate.findOne(query, Task.class); 		
-//		
-//		mongoTemplate.remove(query, Task.class);
-//		taskReq.setTaskId(task.getTaskId());
-//		taskReq.setParentId(parentTask.getParentId());
-		Task task = new Task(taskReq.getParentId(),taskReq.getProjectId(), taskReq.getUserId(), taskReq.getTask(),taskReq.getStartDate(), taskReq.getEndDate(), taskReq.getPriority());
-		
+		// Adding Task data
+		Task task = new Task(taskReq.getParentId(),taskReq.getProjectId(), taskReq.getTask(),taskReq.getStartDate(), taskReq.getEndDate(), taskReq.getPriority());
+		task.set_id(taskReq.getTaskId());
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(taskReq.getTaskId()));
+		mongoTemplate.remove(query, Task.class);	
 		mongoTemplate.save(task);
+		
+		User user = new User();
+		user.setEmployeeId(taskReq.getUserEmployeeId());
+		user.setLastName(taskReq.getUserLastName());
+		user.setFirstName(taskReq.getUserFirstName());
+		user.setProjectId(taskReq.getUserprojectId());
+		user.setTaskId(task.get_id());
+		user.set_id(taskReq.getUserId());
+		Query queryUser = new Query();
+		queryUser.addCriteria(Criteria.where("_id").is(taskReq.getUserId()));
+		mongoTemplate.remove(queryUser, User.class);
+		mongoTemplate.save(user);
 		return taskReq;
 	}
 	

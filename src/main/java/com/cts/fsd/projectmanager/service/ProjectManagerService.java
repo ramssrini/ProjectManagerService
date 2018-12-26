@@ -42,6 +42,7 @@ public class ProjectManagerService {
 		user.setLastName(projectReq.getLastName());
 		user.setFirstName(projectReq.getFirstName());
 		user.setProjectId(projectReq.get_id());
+		user.setTaskId(projectReq.getTaskId());
 		user.set_id(projectReq.getUserid());
 		Query queryUser = new Query();
 		queryUser.addCriteria(Criteria.where("_id").is(projectReq.getUserid()));
@@ -66,29 +67,35 @@ public class ProjectManagerService {
 			map.put(proj.get_id(), proj);
 		}
 		
-		List<User> users = new ArrayList<>();
-
-		users = mongoTemplate.findAll(User.class);
 		
-		for(User user : users)
+		
+		List<User> userList  = mongoTemplate.findAll(User.class);
+		Map<String, User> userMap = new HashMap<>();
+		
+		for(User user : userList) {
+			userMap.put(user.getProjectId(), user);
+		}
+		
+		for(Project proj : projects)
 		{
-			if(user.getProjectId() != null)
+			if(proj != null)
 			{
 				com.cts.fsd.projectmanager.vo.Project project = new com.cts.fsd.projectmanager.vo.Project();
+				project.setProject(proj.getProject());
+				project.setPriority(proj.getPriority());
+				project.setEndDate(proj.getEndDate());
+				project.setStartDate(proj.getStartDate());
+				project.set_id(proj.get_id());
+				User user = userMap.get(proj.get_id());
 				
-				project.setEmployeeId(user.getEmployeeId());
-				project.setUserid(user.get_id());
-				project.setFirstName(user.getFirstName());
-				project.setLastName(user.getLastName());
-				Project proj = map.get(user.getProjectId());
-				
-				if(proj != null)
+				if(user != null)
 				{
-					project.setProject(proj.getProject());
-					project.setPriority(proj.getPriority());
-					project.setEndDate(proj.getEndDate());
-					project.setStartDate(proj.getStartDate());
-					project.set_id(proj.get_id());
+
+					project.setEmployeeId(user.getEmployeeId());
+					project.setUserid(user.get_id());
+					project.setFirstName(user.getFirstName());
+					project.setLastName(user.getLastName());
+					project.setTaskId(user.getTaskId());
 				}
 				
 				projectList.add(project);
@@ -131,6 +138,7 @@ public class ProjectManagerService {
 		user.setLastName(projectReq.getLastName());
 		user.setFirstName(projectReq.getFirstName());
 		user.setProjectId(projectReq.get_id());
+		user.setTaskId(projectReq.getTaskId());
 		user.set_id(projectReq.getUserid());
 		Query queryUser = new Query();
 		queryUser.addCriteria(Criteria.where("_id").is(projectReq.getUserid()));
@@ -148,6 +156,7 @@ public class ProjectManagerService {
 		user.setLastName(projectReq.getLastName());
 		user.setFirstName(projectReq.getFirstName());
 		user.setProjectId("");
+		user.setTaskId(projectReq.getTaskId());
 		user.set_id(projectReq.getUserid());
 		Query queryUser = new Query();
 		queryUser.addCriteria(Criteria.where("_id").is(projectReq.getUserid()));

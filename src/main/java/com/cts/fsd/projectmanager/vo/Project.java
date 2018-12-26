@@ -18,7 +18,14 @@ public class Project implements Serializable{
     private String lastName;
     private String firstName;
     private String employeeId;
+    private String taskId;
     
+	public String getTaskId() {
+		return taskId;
+	}
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
 	public String getLastName() {
 		return lastName;
 	}

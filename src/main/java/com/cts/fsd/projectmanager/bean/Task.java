@@ -9,7 +9,6 @@ public class Task implements java.io.Serializable{
     private String _id;
     private String parentId;
     private String projectId;
-    private String userId;
     @Field(value="taskDesc")
     private String task;
     private String startDate;
@@ -21,7 +20,7 @@ public class Task implements java.io.Serializable{
 		
 	}
     
-    public Task(String parentId,String projectId,String userId, String task,  String startDate,
+    public Task(String parentId,String projectId, String task,  String startDate,
 			String endDate, int priority) {
 		super();
 		this.parentId = parentId;
@@ -30,7 +29,6 @@ public class Task implements java.io.Serializable{
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.priority = priority;
-		this.setUserId(userId);
 	}
 
 	
@@ -109,22 +107,5 @@ public class Task implements java.io.Serializable{
 	 */
 	public void set_id(String _id) {
 		this._id = _id;
-	}
-
-	/**
-	 * @return the userId
-	 */
-	public String getUserId() {
-		return userId;
-	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-    
-    
-   
+	}   
 }
