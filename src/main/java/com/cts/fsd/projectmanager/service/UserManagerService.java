@@ -43,14 +43,7 @@ public class UserManagerService {
 		return users;
 	}
 	
-	public User getUserById(String id) {
-		User user = new User();
-		Query query = new Query();
-		query.addCriteria(Criteria.where("_id").is(id));
-		user = mongoTemplate.findOne(query, User.class);
-		
-		return user;
-	}
+	
 	
 	public User updateUser(User userReq)
 	{

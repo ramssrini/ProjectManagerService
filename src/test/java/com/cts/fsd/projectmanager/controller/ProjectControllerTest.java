@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,7 +39,7 @@ public class ProjectControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	@Test
-	public void addUser() {
+	public void addProject() {
 		com.cts.fsd.projectmanager.vo.Project project = new com.cts.fsd.projectmanager.vo.Project();
 		project.setProject("Test Project Name");
 		project.setPriority(4);
@@ -59,15 +61,17 @@ public class ProjectControllerTest {
 	}
 	
 	@Test
-	public void getTasks() {
-		Project project = new Project();
+	public void getProjects() {
+		List<com.cts.fsd.projectmanager.vo.Project> projects = new ArrayList<>();
+		com.cts.fsd.projectmanager.vo.Project project = new com.cts.fsd.projectmanager.vo.Project();
 		project.setProject("Test Project Name");
 		project.setPriority(4);
 		project.setStartDate("12/12/2017");
 		project.setEndDate("12/12/2018");
+		projects.add(project);
 		Gson gson = new Gson();
 		String json = gson.toJson(project);
-//		when(this.projectManagerService.getProjectById("1")).thenReturn(project);
+		when(this.projectManagerService.getAllProjects()).thenReturn(projects);
 		try {
 			this.mockMvc
 					.perform(get("/getProjects").accept(MediaType.APPLICATION_JSON)
@@ -80,7 +84,7 @@ public class ProjectControllerTest {
 	}
 	
 	@Test
-	public void updateTask() {
+	public void updateProject() {
 		Project project = new Project();
 		project.setProject("Test Project Name Update");
 		project.setPriority(4);
@@ -92,6 +96,27 @@ public class ProjectControllerTest {
 		try {
 			this.mockMvc
 					.perform(post("/updateProject").accept(MediaType.APPLICATION_JSON)
+							.characterEncoding(StandardCharsets.UTF_8.toString())
+							.contentType(MediaType.APPLICATION_JSON).content(json))
+					.andExpect(status().is2xxSuccessful()).andReturn();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void deleteProject() {
+		Project project = new Project();
+		project.setProject("Test Project Name Update");
+		project.setPriority(4);
+		project.setStartDate("12/12/2017");
+		project.setEndDate("12/12/2018");
+		Gson gson = new Gson();
+		String json = gson.toJson(project);
+//		when(this.projectManagerService.getProjectById("1")).thenReturn(project);
+		try {
+			this.mockMvc
+					.perform(post("/deleteProject").accept(MediaType.APPLICATION_JSON)
 							.characterEncoding(StandardCharsets.UTF_8.toString())
 							.contentType(MediaType.APPLICATION_JSON).content(json))
 					.andExpect(status().is2xxSuccessful()).andReturn();

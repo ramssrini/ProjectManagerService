@@ -29,15 +29,6 @@ UserManagerService userManagerService;
     	List<User> users = userManagerService.getAllUsers();
         return users;
     }
-	
-	@CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping(value="/getUser", produces=MediaType.APPLICATION_JSON_VALUE)
-    public User getUser( @RequestParam(value="id") String id) {
-    	
-		User user = userManagerService.getUserById(id);
-    	System.out.println(user);
-        return user;
-    }
 
 	@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value="/addUser", produces=MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

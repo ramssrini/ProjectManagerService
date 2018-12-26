@@ -1,6 +1,7 @@
 package com.cts.fsd.projectmanager.controller;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,7 +59,7 @@ public class UserControllerTest {
 	}
 	
 	@Test
-	public void getTasks() {
+	public void getUsers() {
 		User user = new User();
 		user.setEmployeeId("12323131");
 		user.setFirstName("Test First Name");
@@ -67,7 +68,7 @@ public class UserControllerTest {
 		user.setTaskId("23");
 		Gson gson = new Gson();
 		String json = gson.toJson(user);
-		when(this.userManagerService.getUserById("1")).thenReturn(user);
+//		when(this.userManagerService.getUserById("1")).thenReturn(user);
 		try {
 			this.mockMvc
 					.perform(get("/getUsers").accept(MediaType.APPLICATION_JSON)
@@ -80,7 +81,7 @@ public class UserControllerTest {
 	}
 	
 	@Test
-	public void updateTask() {
+	public void updateUser() {
 		User user = new User();
 		user.setEmployeeId("12323131");
 		user.setFirstName("Updated First Name");
@@ -90,12 +91,35 @@ public class UserControllerTest {
 		user.set_id("1.0");
 		Gson gson = new Gson();
 		String json = gson.toJson(user);
-		when(this.userManagerService.getUserById("1")).thenReturn(user);
+//		when(this.userManagerService.getUserById("1")).thenReturn(user);
 		try {
 			this.mockMvc
 					.perform(post("/updateUser").accept(MediaType.APPLICATION_JSON)
 							.characterEncoding(StandardCharsets.UTF_8.toString())
 							.contentType(MediaType.APPLICATION_JSON).content(json))
+					.andExpect(status().is2xxSuccessful()).andReturn();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void deleteUser() {
+		User user = new User();
+		user.setEmployeeId("12323131");
+		user.setFirstName("Updated First Name");
+		user.setLastName("Updated Last Name");
+		user.setProjectId("12");
+		user.setTaskId("23");
+		user.set_id("1.0");
+		Gson gson = new Gson();
+		String json = gson.toJson(user);
+//		when(this.userManagerService.getUserById("1")).thenReturn(user);
+		try {
+			this.mockMvc
+					.perform(delete("/deleteUser").accept(MediaType.ALL)
+							.characterEncoding(StandardCharsets.UTF_8.toString())
+							.contentType(MediaType.ALL).param("id", "1"))
 					.andExpect(status().is2xxSuccessful()).andReturn();
 		} catch (Exception e) {
 			e.printStackTrace();
