@@ -16,7 +16,11 @@ pipeline{
 		stage('Build'){
 			steps{
 				echo 'Building......'
-				sh '/mvnw install dockerfile:build'
+				withMaven() {
+		            git "https://github.com/ramssrini/ProjectManagerService"
+		            sh './mvnw install dockerfile:build'
+		        }
+				
 			}
 		}
 		stage('Test'){
