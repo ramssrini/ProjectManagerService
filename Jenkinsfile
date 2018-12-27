@@ -16,7 +16,7 @@ pipeline{
 		stage('Build'){
 			steps{
 				echo 'Building......'
-				sh './mvnw install dockerfile:build'
+				sh 'install dockerfile:build'
 			}
 		}
 		stage('Test'){
