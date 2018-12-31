@@ -23,11 +23,11 @@ public class ProjectManagerService {
 	@Autowired
 	MongoTemplate mongoTemplate;
 	
-	
+	Utils utils = new Utils();
 	public com.cts.fsd.projectmanager.vo.Project addProject(com.cts.fsd.projectmanager.vo.Project projectReq) {
 	
 
-		projectReq.set_id(Utils.getNextSequence("projectid").toString());
+		projectReq.set_id(utils.getNextSequence("projectid").toString());
 		Project project = new Project();
 		project.setEndDate(projectReq.getEndDate());
 		project.setStartDate(projectReq.getStartDate());
@@ -166,6 +166,6 @@ public class ProjectManagerService {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(projectReq.get_id()));
 		DeleteResult deleteResult =mongoTemplate.remove(query, Project.class);		
-		return deleteResult.getDeletedCount();
+		return deleteResult != null?deleteResult.getDeletedCount():0L;
 	}
 }

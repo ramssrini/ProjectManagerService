@@ -14,7 +14,7 @@ import com.mongodb.MongoClient;
 public class Utils {
 
 	
-	public static Object getNextSequence(String name){
+	public Object getNextSequence(String name){
 	    MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
 	    // Now connect to your databases
 	    DB db = mongoClient.getDB("taskmanagerdb");

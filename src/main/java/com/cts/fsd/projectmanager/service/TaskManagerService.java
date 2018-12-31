@@ -23,12 +23,13 @@ public class TaskManagerService {
 	@Autowired
 	MongoTemplate mongoTemplate;
 	
+	Utils utils = new Utils();
 	
 	
 	public com.cts.fsd.projectmanager.vo.Task addTask(com.cts.fsd.projectmanager.vo.Task taskReq) {		
 		// Adding Task data
 		Task task = new Task(taskReq.getParentId(),taskReq.getProjectId(), taskReq.getTask(),taskReq.getStartDate(), taskReq.getEndDate(), taskReq.getPriority());
-		task.set_id(Utils.getNextSequence("taskid").toString());
+		task.set_id(utils.getNextSequence("taskid").toString());
 		mongoTemplate.save(task);
 		taskReq.setTaskId(task.get_id());
 		User user = new User();
@@ -50,7 +51,7 @@ public class TaskManagerService {
 		
 		ParentTask parentTask = new ParentTask();
 		parentTask.setParentTask(taskReq.getParentTask());
-		parentTask.set_id(Utils.getNextSequence("parentTaskid").toString());
+		parentTask.set_id(utils.getNextSequence("parentTaskid").toString());
 		
 		mongoTemplate.save(parentTask);
 		
@@ -220,6 +221,6 @@ public class TaskManagerService {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(id));
 		DeleteResult deleteResult =mongoTemplate.remove(query, Task.class);		
-		return deleteResult.getDeletedCount();
+		return deleteResult != null ?deleteResult.getDeletedCount():0L;
 	}
 }

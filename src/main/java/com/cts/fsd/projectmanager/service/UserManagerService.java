@@ -19,6 +19,7 @@ public class UserManagerService {
 	@Autowired
 	MongoTemplate mongoTemplate;
 	
+	Utils utils = new Utils();
 	
 	public User addUser(User userReq) {
 		
@@ -29,7 +30,7 @@ public class UserManagerService {
 //		long id = user != null ? user.get_id():0;
 //		userReq.setUserId(id+1);
 		// Adding User data
-		userReq.set_id(Utils.getNextSequence("userid").toString());
+		userReq.set_id(utils.getNextSequence("userid").toString());
 		mongoTemplate.save(userReq);
 		
 		return userReq;
@@ -61,6 +62,6 @@ public class UserManagerService {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("_id").is(id));
 		DeleteResult deleteResult =mongoTemplate.remove(query, User.class);		
-		return deleteResult.getDeletedCount();
+		return deleteResult != null ?deleteResult.getDeletedCount() : 0L;
 	}
 }
