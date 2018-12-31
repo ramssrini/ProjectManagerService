@@ -30,7 +30,7 @@ public class TaskManagerService {
 		Task task = new Task(taskReq.getParentId(),taskReq.getProjectId(), taskReq.getTask(),taskReq.getStartDate(), taskReq.getEndDate(), taskReq.getPriority());
 		task.set_id(Utils.getNextSequence("taskid").toString());
 		mongoTemplate.save(task);
-		
+		taskReq.setTaskId(task.get_id());
 		User user = new User();
 		user.setEmployeeId(taskReq.getUserEmployeeId());
 		user.setLastName(taskReq.getUserLastName());
@@ -116,7 +116,7 @@ public class TaskManagerService {
 			taskVO.setProject(projectMap.get(taskItem.getProjectId()));
 			taskVO.setStatus(taskItem.getStatus());
 			taskVO.setTask(taskItem.getTask());
-			taskVO.setParentTask(parentTaskMap.get(taskItem.getParentId()).getParentTask());
+			taskVO.setParentTask(parentTaskMap.get(taskItem.getParentId()) != null?parentTaskMap.get(taskItem.getParentId()).getParentTask():"");
 			taskVO.setPriority(taskItem.getPriority());
 			taskVO.setTaskId(taskItem.get_id());
 			User user = userMap.get(taskItem.get_id());
