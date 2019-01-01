@@ -1,4 +1,4 @@
-# TaskManagerService
+# ProjectManagerService
 
 Step 1:
 docker network create fsd_workout_network
