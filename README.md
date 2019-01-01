@@ -1,4 +1,4 @@
-# TaskManagerService
+# ProjectManagerService
 
 Step 1:
 docker network create fsd_workout_network
@@ -10,4 +10,4 @@ Step 3: Clone the source code. Navigate to the application folder and build the 
 ./mvnw install dockerfile:build
 
 Step 4:
-docker run -p 8080:8080 --name fsdTaskManager --network=fsd_workout_network ramssrini/spring-boot-taskmanager-service:0.0.1-SNAPSHOT
+docker run -p 8081:8081 --name fsdTaskManager --network=fsd_workout_network ramssrini/spring-boot-taskmanager-service:0.0.1-SNAPSHOT
